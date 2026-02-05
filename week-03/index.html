@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<body>
+
+    <h1>Week 03</h1>
+
+
+    <script>
+
+      console.log('Welcome to week 3');
+
+      var username = 'sebby';
+
+      console.log('My name is ' + username);
+
+      //var age = 37;
+
+      var age = prompt('What is your age?');
+
+      console.log('My age is ' + age);
+      
+      if (typeof parseInt(age) !== Number) {
+        console.log('that is not a number good try');
+        var age = prompt('enter an actual number');
+      } 
+
+      var numOfYears = prompt('enter a number of years.');
+
+      if (typeof parseInt(newAge) !== Number) {
+        console.log('that is not a number');
+      }
+
+      var newAge = parseInt(age) + parseInt(numOfYears);
+
+
+
+      console.log('In ' + numOfYears + ' years you will be ' + newAge + ' years old!');
+      console.log(typeof newAge)
+
+      var drinkingAge = 21;
+      console.log(typeof drinkingAge);
+
+      var canDrink = newAge >= drinkingAge;
+      console.log(canDrink);
+      console.log(typeof canDrink);
+
+      var canVar = canDrink ? 'can' : 'CANNOT';
+
+      console.log('in ' + numOfYears + ' years you ' + canVar + ' drink');
+
+    </script>
+</body>
+</html>
