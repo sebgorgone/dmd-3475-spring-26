@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>week 04</h1>
+    <h2>excercise 2 - loops</h2>
+
+    <script>
+      var age = prompt('enter your age');
+      console.log('your age is: ' + age);
+
+      var numOfYears = prompt('how many years would you like to see');
+
+      for (let i = 0; i <= parseInt(numOfYears); i++) {
+        if (i === 0) {
+          console.log('you are ' + age + ' years old')
+        } else {
+          const newAge = parseInt(age) + i
+          console.log('in ' + i + ' years you will be ' + newAge + ' years old' )
+        }
+      }
+
+      var number = 0;
+
+      while(number < 5){
+        //alert('number is less than 5');
+        number++;
+      }
+
+    </script>
+  </body>
+</html>
