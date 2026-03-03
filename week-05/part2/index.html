@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM stuff</title>
+    <style>
+    .redBG {
+    background-color: red;
+    }
+
+    .happyColorScheme {
+    background-color: #fafc19;
+    }
+
+    .happyColorScheme h1 {
+    text-transform: lowercase;
+    color: palevioletred;
+    }
+    .happyColorScheme h2 label{
+    text-transform: lowercase;
+    color: pink;
+    }
+
+    .happyColorScheme button {
+    border-radius: 10px;
+    color: blue;
+    text-transform: lowercase;
+    background-color: palevioletred;
+    }
+
+
+    .sadColorScheme {
+    background-color: blue;
+    text-transform: lowercase
+    }
+    .sadColorScheme h1 {
+    font-size: 14px;
+    color #333
+    }
+    .sadColorScheme h2 {
+    font-size: 12px;
+    color #333;
+    }
+    .sadColorScheme button {
+    font-size: 14px;
+    color #333;
+    background-color: transparent;
+    
+    }
+
+    .angryColorScheme {
+
+    }
+
+    </style>
+  </head>
+  <body>
+
+    <h1>
+      DOM Stuff
+    </h1>
+
+    <h2>make page red</h2>
+    <button id='makeRed'>CLick Me</button>
+
+    <h2>change h1 content</h2>
+    <input type="text" id="newH1" placeholder='enter a new h1'>
+    <button id='changeH1'>change the h1</button>
+
+    <h2>how are you today</h2>
+
+    <label for="userMood">enter your mood</label>
+
+    <input type="text" id="userMood" placeholder='happy, sad, or angry?'>
+
+    <button id="processMood">process mood</button>
+
+
+
+    <script>
+
+    var button = document.querySelector('#makeRed');
+    console.log(typeof button);
+
+    button.addEventListener(
+      'click',
+      () => {
+        var body = document.querySelector('body');
+        body.classList.toggle('redBG');
+      },
+    );
+
+
+
+    var h1Inp = document.querySelector('#newH1');
+    var changeH1Button = document.querySelector('#changeH1');
+    var h1 = document.querySelector('h1');
+
+    changeH1Button.addEventListener(
+      'click',
+      () => {
+        var inputVal = h1Inp.value;
+
+        h1.innerHTML = inputVal
+      },
+    );
+
+
+
+    var moodInput = document.querySelector('#userMood');
+    var body = document.querySelector('body');
+    var processBtn = document.querySelector('#processMood')
+
+    processBtn.addEventListener('click', 
+      () => {
+        var inputValue = moodInput.value;
+
+        function removeClasses() {
+          body.classList.remove('happyColorScheme');
+          body.classList.remove('angryColorScheme');
+          body.classList.remove('sadColorScheme');
+
+        }
+
+        if (inputValue === 'happy') {
+          removeClasses()
+          body.classList.add('happyColorScheme');
+        } else if (inputValue === 'sad') {
+          removeClasses();
+          body.classList.add('sadColorScheme');
+        }else if (inputValue === 'angry') {
+          removeClasses();
+          body.classList.add('angryColorScheme');
+        } else {removeClasses(); alert('you need to be happy, sad, or angry.')}
+      },
+    )
+
+
+
+
+
+
+
+    </script>
+
+  </body>
+</html>
