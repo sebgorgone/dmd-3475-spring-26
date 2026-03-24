@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+  </head>
+  <body>
+
+    <h1>Were building a task list</h1>
+
+    <input type="text" id='task-input' placeholder="new task">
+    <button id="add-task-button">add task</button>
+
+    <h2>task list</h2>
+
+    <ul id='task-list'>
+
+      <li>task list item 1</li>
+      <li>task list item 2</li>
+
+    </ul>
+
+    <script>
+      var taskButton = document.querySelector('#add-task-button');
+      var taskInput = document.querySelector('#task-input');
+      var taskList = document.querySelector('#task-list');
+
+      taskButton.addEventListener('click', () => {addTask('<li>' + taskInput.value + '</li>')})
+
+
+
+
+
+      //functions
+
+      function addTask(newTask) {
+        var existingTasks = taskList.innerHTML;
+        taskList.innerHTML = existingTasks + newTask;
+      }
+
+      var shoppingList = ['Apples', 'Oranges', 'Bananas'];
+
+      console.log(shoppingList);
+      console.log(shoppingList[0]);
+
+      shoppingList[shoppingList.length] = 'new thing';
+      shoppingList.push('another thing');
+
+      console.log(shoppingList)
+
+      for (let i = 0; i < shoppingList.length ; i++) {
+        console.log(shoppingList[i])
+      }
+    </script> 
+
+  </body>
+</html>
