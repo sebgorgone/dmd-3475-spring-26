@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  height: 100vh;
+}
+
+header {
+  background-color: grey;
+  grid-area: 1 / 1 / 1 / 1
+}
