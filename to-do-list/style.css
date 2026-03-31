@@ -6,12 +6,108 @@
 
 body {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr 1fr;
   grid-template-columns: repeat(6, 1fr);
   height: 100vh;
 }
 
 header {
   background-color: grey;
-  grid-area: 1 / 1 / 1 / 1
+  grid-area: 1 / 1 / 1 / 3;
+  padding: 12px;
+  overflow: hidden;
 }
+
+header div {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  flex-wrap: wrap;
+  width: 100%
+}
+
+header div input {
+  flex: 1;
+  max-width: 100%;
+}
+
+nav {
+  background-color: grey;
+  grid-area: 2 / 1 / 3 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 12px;
+  gap: 4px;
+}
+
+aside {
+  background-color: grey;
+  grid-area: 3 / 1 / 3 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  gap: 4px;
+}
+
+ main {
+  grid-area: 1 / 3 / 4 / 7;
+  padding: 12px;
+  gap: 4px;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+ }
+
+ button {
+   width: fit-content;
+   height: fit-content;
+   padding: 8px;
+   border: none;
+   border-radius: 8px;
+ }
+
+
+
+
+ #delete-all-button {
+   background-color: red;
+   color: white;
+   font-family: mono;
+ }
+
+#task-input {
+  width: 100%;
+}
+
+
+
+
+
+ @media (min-width: 768px) {
+
+  header {
+    background-color: grey;
+    grid-area: 1 / 1 / 1 / 4
+  }
+
+  nav {
+    background-color: grey;
+    grid-area: 1 / 4 / 1 / 7;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center
+  }
+
+  aside {
+    grid-area: 2 / 1 / 4 / 1;
+  }
+
+  main {
+    grid-area: 2 / 2 / 4 / 7
+  }
+
+ }

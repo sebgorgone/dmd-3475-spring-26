@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>DMD todo list</title>
-   <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMD todo list</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
 
     <header>
 
@@ -19,20 +19,31 @@
         id='task-input'
       >
 
-      <button
-        id='add-task-button'
-      >ADD TASK</button>
+
+
+
+      <div>
+        <input 
+          type='text'
+          placeholder='notes'
+          id='task-note-input'
+        >
+
+        <button
+          id='add-task-button'
+        >ADD TASK</button>
+      </div>
 
 
     </header>
 
     <nav>
 
-      
+
       <button
         id='download-list-button'
       >
-        download to-dos
+        download list 
       </button>
 
       <button
@@ -41,13 +52,15 @@
         upload from save
       </button>
 
+      <button
+        id='delete-list-button'
+      >
+        DELETE LIST
+      </button>
+
     </nav>
 
     <aside>
-
-      <button
-        id='delete-all-button'
-      >DELETE ALL</button>
 
       <button
         id='sort-by-date-button'
@@ -55,15 +68,20 @@
 
       <button
         id='sort-alphabetically-button'
-      >sort alphabetically</button>
+      >sort a => z</button>
+
+
+      <button
+        id='delete-all-button'
+      >DELETE ALL ITEMS</button>
 
     </aside>
 
     <main>
-      
+
     </main>
-   
+
 
     <script type='module' src='main.js'></script>
-</body>
+  </body>
 </html>

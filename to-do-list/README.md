@@ -6,6 +6,7 @@
 [GOALS]
 
   - to do list
+  - mark-items-complete
   - local storage integrated 
   - download and upload functionality via JSON documents
   - optional due date for items
@@ -16,10 +17,20 @@
   - number each item
   - render by descending order
 
-  - shift item up 
+  - shift item up
   - shift item down
 
+  - multiple list support
+  - search functionality
+  - crud features for:
+    > list names
+    > task names
+    > task notes
+    > dates
 
+  - file browser
+
+  -  **mobile responsive layout**
 
 
 
