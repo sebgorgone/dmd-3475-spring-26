@@ -5,6 +5,8 @@
 
 [Im going to try to go as all out as I can with just local storage]
 
+[Im using newovim at the moment for this - which doesnt have any ai configured into it at the moment. 95% of this code will be typed by hand for my own learning]
+
 
 [GOALS]
 

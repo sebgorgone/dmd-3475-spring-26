@@ -91,9 +91,7 @@ export function buildTaskListOrdered (data) {
     const leftDiv = document.createElement('div');
     leftDiv.className = 'left-div';
 
-    const rightDiv = document.createElement('div');
-    rightDiv.clastName = 'rightDiv';
-
+    
     const title = document.createElement('h3');
     title.textContent = activeList.list[i].name;
 
@@ -114,33 +112,34 @@ export function buildTaskListOrdered (data) {
 
     if (i !== 0) {
       const upButton = document.createElement('button');
-      upButton.textContent = '↑'
+      upButton.textContent = '↑';
+      upButton.className = 'up-button';
 
       upButton.addEventListener('click', () => {
-        moveTaskUp(i, activeList.list, data)
+        moveTaskUp(i, activeList.list, data);
       })
 
-      rightDiv.appendChild(upButton)
+      li.appendChild(upButton)
     }
 
     if(i !== activeList.list.length - 1) {
       const downButton = document.createElement('button');
-      downButton.textContent = '↓'
+      downButton.textContent = '↓';
+      downButton.className = 'down-button'
 
       downButton.addEventListener('click', () => {
         moveTaskDown(i, activeList.list, data);
       })
 
-      rightDiv.appendChild(downButton)
+      li.appendChild(downButton)
     }
 
     const deleteButton = document.createElement('button');
     deleteButton.className = 'delete';
     deleteButton.textContent = 'DELETE'
-    rightDiv.appendChild(deleteButton);
+    li.appendChild(deleteButton);
 
     li.appendChild(leftDiv);
-    li.appendChild(rightDiv);
 
     pElement.appendChild(li)
 
