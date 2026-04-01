@@ -15,8 +15,10 @@ let sortAlphabeticallyButton = document.querySelector('#sort-alphabetically-butt
 let deleteAllButton = document.querySelector('#delete-all-button');
 let deleteListButton = document.querySelector('#delete-list-button');
 
-let listSection = document.querySelector('main');
-let fileBrowserSection = document.querySelector('#file-browser-div');
+let listSection = document.querySelector('#task-list');
+let fileBrowserSection = document.querySelector('#file-browser-list');
+
+let fileName = document.querySelector('#file-title')
 
 export const domElements = {
   taskInput,
@@ -33,4 +35,5 @@ export const domElements = {
   deleteListButton,
   listSection,
   fileBrowserSection,
+  fileName
 }

@@ -1,4 +1,7 @@
 [Ive made alot of to do lists in my life so far - and only one of them used plain css + html + js]
+*Most of my js expirience has came from frameworks so this involves a bit of a learning curve for myself*
+
+[I am going to do my best to limit my ai use to general debugging and to help with some of the new syntax we havent covered *Ex: document.createElement()*]
 
 [Im going to try to go as all out as I can with just local storage]
 
@@ -22,6 +25,7 @@
 
   - multiple list support
   - search functionality
+    *this is going to kill me I think - ive built many search features however in vanilla im having trouble coming up with a way for me do it in a reasonable amount of code and time*
   - crud features for:
     > list names
     > task names
@@ -31,6 +35,7 @@
   - file browser
 
   -  **mobile responsive layout**
+  -  **prevent xss as best as i can**
 
 
 
