@@ -54,7 +54,7 @@ export function initStorage() {
 
     localStorage.setItem('tasks', JSON.stringify(defaultList));
     storage = defaultList;
-    console.log(storage)
+    console.log(storage);
     return
 
   }

@@ -51,7 +51,6 @@ export function buildBrowserList(browserList, active, pElement, data) {
     button.textContent = browserList[i];
 
     button.addEventListener('click', () => {
-      console.log('listener active running loop');
 
       for (let j = 0; j < data.length; j++) {
         if (data[j].active) {
@@ -70,6 +69,48 @@ export function buildBrowserList(browserList, active, pElement, data) {
 
     pElement.appendChild(button);
   }
+
+  fileName.addEventListener('click', () => {
+    const input = document.createElement("input");
+    input.type = 'text'
+    input.placeholder = fileName.textContent;
+    input.value = "";
+
+    fileName.replaceWith(input);
+
+
+    input.addEventListener("keydown", e => {
+      if (e.key === 'Enter') {
+        
+
+        for (let i = 0; i < data.length; i++) { 
+          if (data[i].active) {
+            data[i].name = input.value;
+          }
+
+          localStorage.setItem('tasks', JSON.stringify(data));
+        }
+        const h1 = document.createElement("h1");
+        h1.id = 'file-title'
+        h1.textContent = input.value;
+        input.replaceWith(h1);
+        active.name = h1.textContent
+        buildBrowserList(browserList, active, pElement, data);
+      }
+    })
+
+
+    input.focus();
+
+    input.addEventListener("blur", () => {
+      const h1 = document.createElement("h1");
+      h1.id = 'file-title'
+      h1.textContent = active.name;
+
+      input.replaceWith(h1);
+      });
+    });
+
 
 }
 
