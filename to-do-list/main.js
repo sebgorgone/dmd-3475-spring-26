@@ -52,8 +52,11 @@ taskDateInput.addEventListener('keydown', e => {
 });
 
 newTaskListButton.addEventListener('click', () => {
+  let newTaskListName = '';
+
   const dialougeWindow = document.createElement('div');
-  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; '
+  dialougeWindow.className= 'dialouge'
+  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
   const body = document.querySelector('body');
 
 
@@ -67,7 +70,38 @@ newTaskListButton.addEventListener('click', () => {
   dialougeWindow.appendChild(xButton);
 
 
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text'
+  nameInput.placeholder = 'new list name';
+
+  nameInput.addEventListener('input', e => {newTaskListName = e.target.value})
+
+  function checkExistingNames(){
+    const data = JSON.parse(localStorage.getItem('tasks'));
+
+    for (let item of data) {
+      if (item.name === newTaskListName) return true;
+    }
+
+    return false
+  }
+
+  nameInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (newTaskListName.trim() === '' || checkExistingNames()){
+        dialougeWindow.remove();
+      }
+
+      fn.addTaskList(newTaskListName);
+      dialougeWindow.remove();
+    }
+  })
+
+  dialougeWindow.appendChild(nameInput);
+
   body.appendChild(dialougeWindow);
+
+  nameInput.focus();
 
 
 })

@@ -668,7 +668,8 @@ export function addTaskList (name) {
     list : []
   })
 
-  localStorage.setItem(JSON.stringify(data));
+  localStorage.setItem('tasks', JSON.stringify(data));
   buildBrowserList();
+  buildTaskListOrdered(data);
 
 }
