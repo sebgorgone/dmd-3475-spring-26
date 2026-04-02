@@ -125,6 +125,7 @@ export function buildBrowserList() {
       input.replaceWith(h1);
       fileName = h1;
       fileName.addEventListener('click', () => buildBrowserList());
+      buildBrowserList();
     });
   });
 
@@ -145,7 +146,7 @@ export function buildTaskListOrdered(data) {
 
   for (let i = 0; i < activeList.list.length; i++) {
 
-    let task = activeList.list[i].name
+    let task = activeList.list[i].name;
     let taskNote = activeList.list[i].note;
     let taskDate = activeList.list[i].date;
 
@@ -158,7 +159,7 @@ export function buildTaskListOrdered(data) {
     const leftDiv = document.createElement('div');
     leftDiv.className = 'left-div';
 
-    
+
     const title = document.createElement('h3');
     title.textContent = activeList.list[i].name;
 
@@ -170,7 +171,7 @@ export function buildTaskListOrdered(data) {
       nameInput.value = task;
       nameInput.placeholder = activeList.list[i].name;
       nameInput.type = 'text';
-      
+
 
       let replaced = false;
 
@@ -183,21 +184,26 @@ export function buildTaskListOrdered(data) {
       nameInput.addEventListener('keydown', e => {
         if (e.key === 'Enter'){
 
-          if (task.trim() === '' || !replaced) buildTaskListOrdered(data);
 
-          activeList.list[i] = {
-            name: task.trim(),
-            note: taskNote.trim(),
-            date: taskDate.trim()
+          if (task.trim() === '' || !replaced) { buildTaskListOrdered(data) } else {
+
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+
+            buildTaskListOrdered(data)
+
+
           }
 
-          for (let item of data) {
-            if (item.active) {item = activeList}
-          }
-
-          localStorage.setItem('tasks', JSON.stringify(data));
-
-          buildTaskListOrdered(data)
 
         }
       })
@@ -207,19 +213,23 @@ export function buildTaskListOrdered(data) {
 
       nameInput.addEventListener('blur', () => {
         if (replaced) {
-          if (task.trim() === '') buildTaskListOrdered(data);
+          if (task.trim() === '') { buildTaskListOrdered(data) } else {
 
-          activeList.list[i] = {
-            name: task.trim(),
-            note: taskNote.trim(),
-            date: taskDate.trim()
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+
           }
 
-          for (let item of data) {
-            if (item.active) {item = activeList}
-          }
 
-          localStorage.setItem('tasks', JSON.stringify(data));
         }
 
         buildTaskListOrdered(data);
@@ -304,6 +314,74 @@ export function buildTaskListOrdered(data) {
 
 
       leftDiv.appendChild(note);
+    } else {
+      const newNoteButton = document.createElement('button');
+      newNoteButton.className = 'emptyFieldButton';
+      newNoteButton.textContent = '+ note';
+
+      newNoteButton.addEventListener('click', () => {
+        let nameInput = document.createElement('input');
+        nameInput.value = taskNote;
+        nameInput.placeholder = 'task note...'
+        nameInput.type = 'text';
+
+
+        let replaced = false;
+
+        newNoteButton.replaceWith(nameInput);
+
+        nameInput.focus();
+
+        nameInput.addEventListener('input', e => {taskNote = e.target.value; replaced = true;})
+
+        nameInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter'){
+
+            if (!replaced) buildTaskListOrdered(data);
+
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+
+            buildTaskListOrdered(data)
+
+          }
+        })
+
+
+
+
+        nameInput.addEventListener('blur', () => {
+          if (replaced) {
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+          }
+
+          buildTaskListOrdered(data);
+        })
+
+
+      });
+
+      leftDiv.appendChild(newNoteButton)
+
     }
 
     if (activeList.list[i].date.trim() !== '') {
@@ -378,6 +456,76 @@ export function buildTaskListOrdered(data) {
 
 
       leftDiv.appendChild(date);
+    } else {
+
+      const newDateButton = document.createElement('button');
+      newDateButton.className = 'emptyFieldButton';
+      newDateButton.textContent = '+ Date';
+
+      newDateButton.addEventListener('click', () => {
+        let nameInput = document.createElement('input');
+        nameInput.value = taskDate;
+        nameInput.placeholder = 'task date...'
+        nameInput.type = 'date';
+
+
+        let replaced = false;
+
+        newDateButton.replaceWith(nameInput);
+
+        nameInput.focus();
+
+        nameInput.addEventListener('input', e => {taskDate = e.target.value; replaced = true;})
+
+        nameInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter'){
+
+            if (!replaced) buildTaskListOrdered(data);
+
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+
+            buildTaskListOrdered(data)
+
+          }
+        })
+
+
+
+
+        nameInput.addEventListener('blur', () => {
+          if (replaced) {
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+          }
+
+          buildTaskListOrdered(data);
+        })
+
+
+      });
+
+      leftDiv.appendChild(newDateButton);
+
+
     }
 
     if (i !== 0) {
@@ -505,4 +653,22 @@ export function addTask(task, note, date) {
   taskDateInput.value = '';
 
   taskInput.focus();
+}
+
+export function addTaskList (name) {
+  const data = JSON.parse(localStorage.getItem('tasks'));
+
+  for (let item of data) {
+    item.active = false;
+  }
+
+  data.push({
+    name: name,
+    active: true,
+    list : []
+  })
+
+  localStorage.setItem(JSON.stringify(data));
+  buildBrowserList();
+
 }
