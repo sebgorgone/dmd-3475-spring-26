@@ -123,18 +123,18 @@ export function buildBrowserList() {
       h1.id = 'file-title';
       h1.textContent = active.name;
       input.replaceWith(h1);
-      // Re-attach the click event to the new h1
       fileName = h1;
-      fileName.addEventListener('click', () => buildBrowserList(pElement));
+      fileName.addEventListener('click', () => buildBrowserList());
     });
   });
 
 
 }
 
-export function buildTaskListOrdered (data) {
+export function buildTaskListOrdered(data) {
   const pElement = listSection;
-  pElement.innerHTML = ''
+  pElement.innerHTML = '';
+
 
   function pruneInactive() {
     return data.filter(list => list.active)
@@ -144,9 +144,16 @@ export function buildTaskListOrdered (data) {
 
 
   for (let i = 0; i < activeList.list.length; i++) {
+
+    let task = activeList.list[i].name
+    let taskNote = activeList.list[i].note;
+    let taskDate = activeList.list[i].date;
+
+
+
     const li = document.createElement('li');
     li.className = 'list-element';
-    li.id = `list-element-${i}`
+    li.id = `list-element-${i}`;
 
     const leftDiv = document.createElement('div');
     leftDiv.className = 'left-div';
@@ -155,11 +162,147 @@ export function buildTaskListOrdered (data) {
     const title = document.createElement('h3');
     title.textContent = activeList.list[i].name;
 
+
+
+
+    title.addEventListener('click', () => {
+      let nameInput = document.createElement('input');
+      nameInput.value = task;
+      nameInput.placeholder = activeList.list[i].name;
+      nameInput.type = 'text';
+      
+
+      let replaced = false;
+
+      title.replaceWith(nameInput);
+
+      nameInput.focus();
+
+      nameInput.addEventListener('input', e => {task = e.target.value; replaced = true;})
+
+      nameInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter'){
+
+          if (task.trim() === '' || !replaced) buildTaskListOrdered(data);
+
+          activeList.list[i] = {
+            name: task.trim(),
+            note: taskNote.trim(),
+            date: taskDate.trim()
+          }
+
+          for (let item of data) {
+            if (item.active) {item = activeList}
+          }
+
+          localStorage.setItem('tasks', JSON.stringify(data));
+
+          buildTaskListOrdered(data)
+
+        }
+      })
+
+
+
+
+      nameInput.addEventListener('blur', () => {
+        if (replaced) {
+          if (task.trim() === '') buildTaskListOrdered(data);
+
+          activeList.list[i] = {
+            name: task.trim(),
+            note: taskNote.trim(),
+            date: taskDate.trim()
+          }
+
+          for (let item of data) {
+            if (item.active) {item = activeList}
+          }
+
+          localStorage.setItem('tasks', JSON.stringify(data));
+        }
+
+        buildTaskListOrdered(data);
+      })
+
+
+    });
+
+
+
+
     leftDiv.appendChild(title);
-    
+
     if (activeList.list[i].note.trim() !== ''){
       const note = document.createElement('p');
       note.textContent = activeList.list[i].note;
+
+
+      note.addEventListener('click', () => {
+        let nameInput = document.createElement('input');
+        nameInput.value = taskNote;
+        nameInput.placeholder = activeList.list[i].note;
+        nameInput.type = 'text';
+
+
+        let replaced = false;
+
+        note.replaceWith(nameInput);
+
+        nameInput.focus();
+
+        nameInput.addEventListener('input', e => {taskNote = e.target.value; replaced = true;})
+
+        nameInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter'){
+
+            if (!replaced) buildTaskListOrdered(data);
+
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+
+            buildTaskListOrdered(data)
+
+          }
+        })
+
+
+
+
+        nameInput.addEventListener('blur', () => {
+          if (replaced) {
+
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+          }
+
+          buildTaskListOrdered(data);
+        })
+
+
+      });
+
+
+
+
       leftDiv.appendChild(note);
     }
 
@@ -167,6 +310,73 @@ export function buildTaskListOrdered (data) {
       const date = document.createElement('p');
       date.className = 'date';
       date.textContent = activeList.list[i].date
+
+
+
+      date.addEventListener('click', () => {
+        let nameInput = document.createElement('input');
+        nameInput.value = taskDate;
+        nameInput.placeholder = Date(activeList.list[i].date);
+        nameInput.type = 'date';
+
+
+        let replaced = false;
+
+        date.replaceWith(nameInput);
+
+        nameInput.focus();
+
+        nameInput.addEventListener('input', e => {taskDate = e.target.value; replaced = true;})
+
+        nameInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter'){
+
+            if (!replaced) buildTaskListOrdered(data);
+
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+
+            buildTaskListOrdered(data)
+
+          }
+        })
+
+
+
+
+        nameInput.addEventListener('blur', () => {
+          if (replaced) {
+            activeList.list[i] = {
+              name: task.trim(),
+              note: taskNote.trim(),
+              date: taskDate.trim()
+            }
+
+            for (let item of data) {
+              if (item.active) {item = activeList}
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(data));
+          }
+
+          buildTaskListOrdered(data);
+        })
+
+
+      });
+
+
+
+
       leftDiv.appendChild(date);
     }
 

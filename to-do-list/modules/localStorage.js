@@ -13,17 +13,17 @@ export function initStorage() {
           {
             name: 'my first task',
             note: 'you need to do this',
-            date: '31-30-2026',
+            date: '2005-08-02',
           },
           {
             name: 'my second task',
             note: 'you need to do this',
-            date: '31-30-2026'
+            date: '2025-06-22'
           },
           {
             name: 'my third task',
             note: 'you need to do this',
-            date: '31-30-2026'
+            date: '3202-04-18'
           }
         ]
       },
@@ -36,17 +36,14 @@ export function initStorage() {
           {
             name: 'my other first task',
             note: 'you need to do this',
-            date: '31-30-2026',
           },
           {
             name: 'my other second task',
             note: 'you need to do this',
-            date: '31-30-2026'
           },
           {
             name: 'my other third task',
             note: 'you need to do this',
-            date: '31-30-2026'
           }
         ]
       }
