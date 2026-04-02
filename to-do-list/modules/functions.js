@@ -1,7 +1,7 @@
 import { initStorage } from './localStorage.js'
 import { domElements } from './dom.js';
 
-const { listSection, fileName } = domElements
+let { listSection, fileName } = domElements
 
 export function formatDate(date) {
   const formatted = String(date.getDate()).padStart(2, '0') + '-' +
@@ -27,9 +27,17 @@ export function build(data) {
 
 
 
-export function buildBrowserList(browserList, active, pElement, data) {
+export function buildBrowserList(browserList, pElement ) {
 
 
+  let data = JSON.parse(localStorage.getItem('tasks'));
+  let active = null
+
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].active)  {
+      active = data[i]
+    } 
+  }
   pElement.innerHTML = '';
   fileName.textContent = active.name;
 
@@ -63,53 +71,59 @@ export function buildBrowserList(browserList, active, pElement, data) {
 
       localStorage.setItem('tasks', JSON.stringify(data));
       initStorage();
-      buildBrowserList(browserList, active, pElement, data);
+      buildBrowserList(browserList, pElement);
       buildTaskListOrdered(data);
     });
 
     pElement.appendChild(button);
   }
 
+  let newFileName = fileName.cloneNode(true);
+  fileName.parentNode.replaceChild(newFileName, fileName);
+  fileName = newFileName;
+
   fileName.addEventListener('click', () => {
     const input = document.createElement("input");
-    input.type = 'text'
+    input.type = 'text';
     input.placeholder = fileName.textContent;
     input.value = "";
-
+    let replaced = false;
     fileName.replaceWith(input);
-
 
     input.addEventListener("keydown", e => {
       if (e.key === 'Enter') {
-        
-
-        for (let i = 0; i < data.length; i++) { 
+        replaced = true;
+        for (let i = 0; i < data.length; i++) {
           if (data[i].active) {
             data[i].name = input.value;
           }
-
           localStorage.setItem('tasks', JSON.stringify(data));
         }
         const h1 = document.createElement("h1");
-        h1.id = 'file-title'
+        h1.id = 'file-title';
         h1.textContent = input.value;
         input.replaceWith(h1);
-        active.name = h1.textContent
-        buildBrowserList(browserList, active, pElement, data);
+        active.name = h1.textContent;
+        // Re-attach the click event to the new h1
+        fileName = h1;
+        fileName.addEventListener('click', () => buildBrowserList(browserList, active, pElement, data));
+        buildBrowserList(browserList, pElement);
       }
-    })
-
+    });
 
     input.focus();
 
     input.addEventListener("blur", () => {
+      if (replaced) return;
       const h1 = document.createElement("h1");
-      h1.id = 'file-title'
+      h1.id = 'file-title';
       h1.textContent = active.name;
-
       input.replaceWith(h1);
-      });
+      // Re-attach the click event to the new h1
+      fileName = h1;
+      fileName.addEventListener('click', () => buildBrowserList(browserList, pElement));
     });
+  });
 
 
 }
