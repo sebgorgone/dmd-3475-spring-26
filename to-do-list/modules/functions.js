@@ -24,6 +24,7 @@ export function buildBrowserList() {
 
 
   let data = JSON.parse(localStorage.getItem('tasks'));
+
   let active = null;
   let browserList = [];
   let pElement = fileBrowserSection;
@@ -59,19 +60,18 @@ export function buildBrowserList() {
 
     button.addEventListener('click', () => {
 
-      for (let j = 0; j < data.length; j++) {
-        if (data[j].active) {
-          data[j].active = false;
+      const interData = JSON.parse(localStorage.getItem('tasks'))
+
+      for (let j = 0; j < interData.length; j++) {
+        if (interData[j].active) {
+          interData[j].active = false;
         }
       }
 
-      data[i].active = true;
-      active = data[i];
+      interData[i].active = true;
 
-      localStorage.setItem('tasks', JSON.stringify(data));
-      initStorage();
+      localStorage.setItem('tasks', JSON.stringify(interData));
       buildBrowserList ();
-      buildTaskListOrdered(data);
     });
 
     pElement.appendChild(button);
@@ -129,12 +129,17 @@ export function buildBrowserList() {
     });
   });
 
+  localStorage.setItem('tasks', JSON.stringify(data))
+
+  buildTaskListOrdered();
 
 }
 
-export function buildTaskListOrdered(data) {
+export function buildTaskListOrdered() {
   const pElement = listSection;
   pElement.innerHTML = '';
+
+  let data = JSON.parse(localStorage.getItem('tasks'));
 
 
   function pruneInactive() {
@@ -199,7 +204,7 @@ export function buildTaskListOrdered(data) {
 
             localStorage.setItem('tasks', JSON.stringify(data));
 
-            buildTaskListOrdered(data)
+            buildTaskListOrdered()
 
 
           }
@@ -232,7 +237,7 @@ export function buildTaskListOrdered(data) {
 
         }
 
-        buildTaskListOrdered(data);
+        buildTaskListOrdered();
       })
 
 
@@ -280,7 +285,7 @@ export function buildTaskListOrdered(data) {
 
             localStorage.setItem('tasks', JSON.stringify(data));
 
-            buildTaskListOrdered(data)
+            buildTaskListOrdered()
 
           }
         })
@@ -304,7 +309,7 @@ export function buildTaskListOrdered(data) {
             localStorage.setItem('tasks', JSON.stringify(data));
           }
 
-          buildTaskListOrdered(data);
+          buildTaskListOrdered();
         })
 
 
@@ -337,7 +342,7 @@ export function buildTaskListOrdered(data) {
         nameInput.addEventListener('keydown', e => {
           if (e.key === 'Enter'){
 
-            if (!replaced) buildTaskListOrdered(data);
+            if (!replaced) buildTaskListOrdered();
 
             activeList.list[i] = {
               name: task.trim(),
@@ -351,7 +356,7 @@ export function buildTaskListOrdered(data) {
 
             localStorage.setItem('tasks', JSON.stringify(data));
 
-            buildTaskListOrdered(data)
+            buildTaskListOrdered()
 
           }
         })
@@ -374,7 +379,7 @@ export function buildTaskListOrdered(data) {
             localStorage.setItem('tasks', JSON.stringify(data));
           }
 
-          buildTaskListOrdered(data);
+          buildTaskListOrdered();
         })
 
 
@@ -409,7 +414,7 @@ export function buildTaskListOrdered(data) {
         nameInput.addEventListener('keydown', e => {
           if (e.key === 'Enter'){
 
-            if (!replaced) buildTaskListOrdered(data);
+            if (!replaced) buildTaskListOrdered();
 
             activeList.list[i] = {
               name: task.trim(),
@@ -423,7 +428,7 @@ export function buildTaskListOrdered(data) {
 
             localStorage.setItem('tasks', JSON.stringify(data));
 
-            buildTaskListOrdered(data)
+            buildTaskListOrdered()
 
           }
         })
@@ -446,7 +451,7 @@ export function buildTaskListOrdered(data) {
             localStorage.setItem('tasks', JSON.stringify(data));
           }
 
-          buildTaskListOrdered(data);
+          buildTaskListOrdered();
         })
 
 
@@ -480,7 +485,7 @@ export function buildTaskListOrdered(data) {
         nameInput.addEventListener('keydown', e => {
           if (e.key === 'Enter'){
 
-            if (!replaced) buildTaskListOrdered(data);
+            if (!replaced) buildTaskListOrdered();
 
             activeList.list[i] = {
               name: task.trim(),
@@ -517,7 +522,7 @@ export function buildTaskListOrdered(data) {
             localStorage.setItem('tasks', JSON.stringify(data));
           }
 
-          buildTaskListOrdered(data);
+          buildTaskListOrdered();
         })
 
 
@@ -583,7 +588,7 @@ function moveTaskUp (index, activeList, data) {
   }
 
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered(data);
+  buildTaskListOrdered();
 
 }
 
@@ -601,7 +606,7 @@ function moveTaskDown (index, activeList, data) {
   }
 
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered(data);
+  buildTaskListOrdered();
 
 }
 
@@ -614,7 +619,7 @@ function deleteTask(index, activeList, data) {
   }
 
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered(data);
+  buildTaskListOrdered();
 }
 
 
@@ -639,14 +644,8 @@ export function addTask(task, note, date) {
 
   active.list = [newItem, ...active.list];
 
-  for (let item of data) {
-    if (item.active) {
-      item = active;
-    }
-  }
-
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered(data);
+  buildTaskListOrdered();
 
   taskInput.value = '';
   taskNoteInput.value = '';
@@ -656,7 +655,7 @@ export function addTask(task, note, date) {
 }
 
 export function addTaskList (name) {
-  const data = JSON.parse(localStorage.getItem('tasks'));
+  let data = JSON.parse(localStorage.getItem('tasks'));
 
   for (let item of data) {
     item.active = false;
@@ -665,11 +664,153 @@ export function addTaskList (name) {
   data.push({
     name: name,
     active: true,
-    list : []
+    list: []
   })
 
   localStorage.setItem('tasks', JSON.stringify(data));
   buildBrowserList();
-  buildTaskListOrdered(data);
+}
 
+export function deleteActiveList(){
+  let data = JSON.parse(localStorage.getItem('tasks'));
+
+  if (data.length < 2) return
+
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].active) {
+      data.splice(i, 1);
+    }
+  }
+
+  data[0].active = true;
+
+  localStorage.setItem('tasks', JSON.stringify(data));
+
+  buildBrowserList();
+
+}
+
+
+export function deleteAllActiveItems() {
+  let data = JSON.parse(localStorage.getItem('tasks'));
+
+  for (let item of data) {
+    if (item.active) {
+      item.list = [];
+    }
+  }
+
+  localStorage.setItem('tasks', JSON.stringify(data));
+  buildTaskListOrdered();
+}
+
+export function sortAlphabetically() {
+  let data = JSON.parse(localStorage.getItem('tasks'));
+
+  for (let item of data) {
+    if (item.active) {
+      item.list.sort((a, b) => a.name.localeCompare(b.name));
+    }
+  }
+
+  localStorage.setItem('tasks', JSON.stringify(data));
+  buildTaskListOrdered();
+
+}
+
+export function sortByDate() {
+  let data = JSON.parse(localStorage.getItem('tasks'));
+
+  for (let item of data) {
+    if (item.active) {
+
+      let arr1 = item.list.filter(i => i.date !== '');
+      let arr2 = item.list.filter(i => i.date === '');
+
+      arr1.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      const newList = [...arr1, ...arr2];
+
+      item.list = newList;
+
+      localStorage.setItem('tasks', JSON.stringify(data));
+      buildTaskListOrdered();
+      return
+
+    }
+  }
+}
+
+export function wildcardSearch(wc) {
+  let data = JSON.parse(localStorage.getItem('tasks'));
+
+  function normalize(string) {
+    string.trim().toLowerCase().replace(/\s+/g, '').replace(/[^\w]/g, '')
+    return string;
+  }
+
+  for (let item of data) {
+    if (item.active) {
+      let activeList = [];
+
+
+      for (let i of item.list){
+        if (normalize(i.name).includes(normalize(wc))){
+          activeList.push(i);
+        }
+      }
+
+      if (activeList.length === 0){
+        buildTaskListOrdered();
+        return
+      }
+      buildWildcardSearch(activeList);
+      return
+
+    }
+  }
+}
+
+
+
+function buildWildcardSearch(activeList) {
+  const pElement = listSection;
+  pElement.innerHTML = '';
+
+
+  for (let i = 0; i < activeList.length; i++) {
+
+    const li = document.createElement('li');
+    li.className = 'list-element';
+    li.id = `list-element-${i}`;
+
+    const leftDiv = document.createElement('div');
+    leftDiv.className = 'left-div';
+
+
+    const title = document.createElement('h3');
+    title.textContent = activeList[i].name;
+
+
+    leftDiv.appendChild(title);
+
+    if (activeList[i].note.trim() !== ''){
+      const note = document.createElement('p');
+      note.textContent = activeList[i].note;
+      leftDiv.appendChild(note);
+    } 
+
+    if (activeList[i].date.trim() !== '') {
+      const date = document.createElement('p');
+      date.className = 'date';
+      date.textContent = activeList[i].date
+      leftDiv.appendChild(date);
+    }
+
+   
+    li.appendChild(leftDiv);
+
+    pElement.appendChild(li)
+
+  }
 }

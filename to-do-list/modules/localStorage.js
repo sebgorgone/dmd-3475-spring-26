@@ -36,14 +36,17 @@ export function initStorage() {
           {
             name: 'my other first task',
             note: 'you need to do this',
+            date: ''
           },
           {
             name: 'my other second task',
             note: 'you need to do this',
+            date: ''
           },
           {
             name: 'my other third task',
             note: 'you need to do this',
+            date: ''
           }
         ]
       }

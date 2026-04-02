@@ -80,7 +80,7 @@ newTaskListButton.addEventListener('click', () => {
     const data = JSON.parse(localStorage.getItem('tasks'));
 
     for (let item of data) {
-      if (item.name === newTaskListName) return true;
+      if (item.name.trim() === newTaskListName.trim()) return true;
     }
 
     return false
@@ -90,10 +90,11 @@ newTaskListButton.addEventListener('click', () => {
     if (e.key === 'Enter') {
       if (newTaskListName.trim() === '' || checkExistingNames()){
         dialougeWindow.remove();
+      } else {
+        fn.addTaskList(newTaskListName);
+        dialougeWindow.remove();
       }
 
-      fn.addTaskList(newTaskListName);
-      dialougeWindow.remove();
     }
   })
 
@@ -104,4 +105,129 @@ newTaskListButton.addEventListener('click', () => {
   nameInput.focus();
 
 
+})
+
+
+
+
+
+deleteListButton.addEventListener('click', () => {
+
+  const dialougeWindow = document.createElement('div');
+  dialougeWindow.className= 'dialouge'
+  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
+  const body = document.querySelector('body');
+
+
+  const xButton = document.createElement('button');
+  xButton.className = 'delete';
+  xButton.textContent = 'X';
+  xButton.addEventListener('click', () => {
+    dialougeWindow.remove();
+  });
+
+  function getName() {
+    const data = JSON.parse(localStorage.getItem('tasks'));
+
+    for (let item of data) {
+      if (item.active) return item.name;
+    }
+  }
+
+  const text = document.createElement('p');
+  text.textContent = `are you sure you want to delete ${getName()}`
+
+  dialougeWindow.appendChild(xButton);
+  dialougeWindow.appendChild(text);
+
+  const div = document.createElement('div');
+  const okButton = document.createElement('button')
+  okButton.textContent = 'ok';
+  okButton.className = 'delete'
+
+  okButton.addEventListener('click', () => {
+    fn.deleteActiveList();
+    dialougeWindow.remove();
+  });
+
+  const cancelButton = document.createElement('button');
+  cancelButton.textContent = 'cancel'
+
+  cancelButton.addEventListener('click', () => {
+    dialougeWindow.remove();
+  })
+
+  div.appendChild(okButton);
+  div.appendChild(cancelButton);
+  dialougeWindow.appendChild(div);
+  body.appendChild(dialougeWindow);
+
+
+});
+
+
+deleteAllButton.addEventListener('click', () => {
+
+  const dialougeWindow = document.createElement('div');
+  dialougeWindow.className= 'dialouge'
+  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
+  const body = document.querySelector('body');
+
+
+  const xButton = document.createElement('button');
+  xButton.className = 'delete';
+  xButton.textContent = 'X';
+  xButton.addEventListener('click', () => {
+    dialougeWindow.remove();
+  });
+
+  function getName() {
+    const data = JSON.parse(localStorage.getItem('tasks'));
+
+    for (let item of data) {
+      if (item.active) return item.name;
+    }
+  }
+
+  const text = document.createElement('p');
+  text.textContent = `are you sure you want to delete all task in ${getName()}`
+
+  dialougeWindow.appendChild(xButton);
+  dialougeWindow.appendChild(text);
+
+  const div = document.createElement('div');
+  const okButton = document.createElement('button')
+  okButton.textContent = 'ok';
+  okButton.className = 'delete'
+
+  okButton.addEventListener('click', () => {
+    fn.deleteAllActiveItems();
+    dialougeWindow.remove();
+  });
+
+  const cancelButton = document.createElement('button');
+  cancelButton.textContent = 'cancel'
+
+  cancelButton.addEventListener('click', () => {
+    dialougeWindow.remove();
+  })
+
+  div.appendChild(okButton);
+  div.appendChild(cancelButton);
+  dialougeWindow.appendChild(div);
+  body.appendChild(dialougeWindow);
+
+
+});
+
+sortAlphabeticallyButton.addEventListener('click', () => {
+  fn.sortAlphabetically();
+})
+
+sortByDateButton.addEventListener('click', () => {
+  fn.sortByDate();
+})
+
+taskSearchInput.addEventListener('input', () => {
+  fn.wildcardSearch(taskSearchInput.value);
 })
