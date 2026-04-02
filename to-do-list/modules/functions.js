@@ -1,15 +1,8 @@
 import { initStorage } from './localStorage.js'
 import { domElements } from './dom.js';
 
-let { listSection, fileName } = domElements
+let { listSection, fileName, fileBrowserSection, taskInput, taskNoteInput, taskDateInput } = domElements
 
-export function formatDate(date) {
-  const formatted = String(date.getDate()).padStart(2, '0') + '-' +
-    String(date.getMonth() + 1).padStart(2, '0') + '-' +
-    date.getFullYear();
-
-  return formatted
-}
 
 export function build(data) {
   let active = null;
@@ -27,11 +20,17 @@ export function build(data) {
 
 
 
-export function buildBrowserList(browserList, pElement ) {
+export function buildBrowserList() {
 
 
   let data = JSON.parse(localStorage.getItem('tasks'));
-  let active = null
+  let active = null;
+  let browserList = [];
+  let pElement = fileBrowserSection;
+
+  for (let i = 0; i < data.length; i++) {
+    browserList.push(data[i].name)
+  }
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].active)  {
@@ -71,7 +70,7 @@ export function buildBrowserList(browserList, pElement ) {
 
       localStorage.setItem('tasks', JSON.stringify(data));
       initStorage();
-      buildBrowserList(browserList, pElement);
+      buildBrowserList ();
       buildTaskListOrdered(data);
     });
 
@@ -103,11 +102,16 @@ export function buildBrowserList(browserList, pElement ) {
         h1.id = 'file-title';
         h1.textContent = input.value;
         input.replaceWith(h1);
+
+
+
         active.name = h1.textContent;
-        // Re-attach the click event to the new h1
+
+
+
         fileName = h1;
-        fileName.addEventListener('click', () => buildBrowserList(browserList, active, pElement, data));
-        buildBrowserList(browserList, pElement);
+        fileName.addEventListener('click', () => buildBrowserList())
+        buildBrowserList();
       }
     });
 
@@ -121,7 +125,7 @@ export function buildBrowserList(browserList, pElement ) {
       input.replaceWith(h1);
       // Re-attach the click event to the new h1
       fileName = h1;
-      fileName.addEventListener('click', () => buildBrowserList(browserList, pElement));
+      fileName.addEventListener('click', () => buildBrowserList(pElement));
     });
   });
 
@@ -142,6 +146,7 @@ export function buildTaskListOrdered (data) {
   for (let i = 0; i < activeList.list.length; i++) {
     const li = document.createElement('li');
     li.className = 'list-element';
+    li.id = `list-element-${i}`
 
     const leftDiv = document.createElement('div');
     leftDiv.className = 'left-div';
@@ -191,7 +196,12 @@ export function buildTaskListOrdered (data) {
 
     const deleteButton = document.createElement('button');
     deleteButton.className = 'delete';
-    deleteButton.textContent = 'DELETE'
+    deleteButton.textContent = 'DELETE';
+
+    deleteButton.addEventListener('click', () => {
+      deleteTask(i, activeList, data);
+    })
+
     li.appendChild(deleteButton);
 
     li.appendChild(leftDiv);
@@ -235,4 +245,54 @@ function moveTaskDown (index, activeList, data) {
   localStorage.setItem('tasks', JSON.stringify(data));
   buildTaskListOrdered(data);
 
+}
+
+
+function deleteTask(index, activeList, data) {
+  activeList.list.splice(index, 1);
+
+  for (let i = 0; i < data.length; i++) {
+    data[i].active && (data[i].list = activeList.list);
+  }
+
+  localStorage.setItem('tasks', JSON.stringify(data));
+  buildTaskListOrdered(data);
+}
+
+
+
+
+export function addTask(task, note, date) {
+  if (task.trim() === '') return;
+
+  let data = JSON.parse(localStorage.getItem('tasks'));
+  let active = null;
+  for (let item of data) {
+    if (item.active) {
+      active = item;
+    }
+  }
+
+  const newItem = {
+    name: task.trim(),
+    note: note.trim(),
+    date: date.trim()
+  }
+
+  active.list = [newItem, ...active.list];
+
+  for (let item of data) {
+    if (item.active) {
+      item = active;
+    }
+  }
+
+  localStorage.setItem('tasks', JSON.stringify(data));
+  buildTaskListOrdered(data);
+
+  taskInput.value = '';
+  taskNoteInput.value = '';
+  taskDateInput.value = '';
+
+  taskInput.focus();
 }

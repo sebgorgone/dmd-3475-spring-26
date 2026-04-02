@@ -25,16 +25,28 @@ let {
 
 
 const { active, browserList} = fn.build(local.data);
-fn.buildBrowserList(browserList, active, fileBrowserSection, local.data);
+fn.buildBrowserList();
 fn.buildTaskListOrdered(local.data);
 
 
+addTaskButton.addEventListener('click', () => {
+  fn.addTask(taskInput.value, taskNoteInput.value, taskDateInput.value);
+});
 
+taskInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    fn.addTask(taskInput.value, taskNoteInput.value, taskDateInput.value);
+  }
+});
 
+taskNoteInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    fn.addTask(taskInput.value, taskNoteInput.value, taskDateInput.value);
+  }
+});
 
-
-console.log(fn.formatDate(new Date()));
-
-
-
-
+taskDateInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    fn.addTask(taskInput.value, taskNoteInput.value, taskDateInput.value);
+  }
+});
