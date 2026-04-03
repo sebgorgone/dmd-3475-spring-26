@@ -52,16 +52,16 @@ taskDateInput.addEventListener('keydown', e => {
 });
 
 newTaskListButton.addEventListener('click', () => {
+  if (document.querySelector('.dialouge')) return
   let newTaskListName = '';
 
   const dialougeWindow = document.createElement('div');
   dialougeWindow.className= 'dialouge'
-  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
+  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
   const body = document.querySelector('body');
 
 
   const xButton = document.createElement('button');
-  xButton.className = 'delete';
   xButton.textContent = 'X';
   xButton.addEventListener('click', () => {
     dialougeWindow.remove();
@@ -113,14 +113,15 @@ newTaskListButton.addEventListener('click', () => {
 
 deleteListButton.addEventListener('click', () => {
 
+  if (document.querySelector('.dialouge')) return
+
   const dialougeWindow = document.createElement('div');
   dialougeWindow.className= 'dialouge'
-  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
+  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
   const body = document.querySelector('body');
 
 
   const xButton = document.createElement('button');
-  xButton.className = 'delete';
   xButton.textContent = 'X';
   xButton.addEventListener('click', () => {
     dialougeWindow.remove();
@@ -167,30 +168,37 @@ deleteListButton.addEventListener('click', () => {
 
 
 deleteAllButton.addEventListener('click', () => {
+  if (document.querySelector('.dialouge')) return
+
+
+  const data = JSON.parse(localStorage.getItem('tasks'));
+
+  for (let item of data){
+    if (item.active){
+      if (item.list.length === 0) return
+    }
+  }
 
   const dialougeWindow = document.createElement('div');
   dialougeWindow.className= 'dialouge'
-  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; background-color: rgb(20, 20, 20); z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
+  dialougeWindow.style.cssText = 'position: fixed; top: 30px; right: 30px; z-index: 10; width: 450px; height: 128px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; padding-4px;'
   const body = document.querySelector('body');
 
 
   const xButton = document.createElement('button');
-  xButton.className = 'delete';
   xButton.textContent = 'X';
   xButton.addEventListener('click', () => {
     dialougeWindow.remove();
   });
 
   function getName() {
-    const data = JSON.parse(localStorage.getItem('tasks'));
-
     for (let item of data) {
       if (item.active) return item.name;
     }
   }
 
   const text = document.createElement('p');
-  text.textContent = `are you sure you want to delete all task in ${getName()}`
+  text.textContent = `are you sure you want to delete all tasks in ${getName()}`
 
   dialougeWindow.appendChild(xButton);
   dialougeWindow.appendChild(text);
@@ -230,4 +238,36 @@ sortByDateButton.addEventListener('click', () => {
 
 taskSearchInput.addEventListener('input', () => {
   fn.wildcardSearch(taskSearchInput.value);
+})
+ 
+
+downloadListButton.addEventListener('click', () => {
+    fn.downloadList()
+})
+
+const fileInput = document.querySelector('#fileInput');
+
+uploadListButton.addEventListener('click', () => {
+  fileInput.click();
+})
+
+fileInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return
+
+  const reader = new FileReader();
+
+  reader.onload = event => {
+    try {
+      const json = JSON.parse(event.target.result);
+
+      fn.uploadList(json);
+
+    } catch {
+      console.error('invalid json file');
+    }
+  }
+
+  reader.readAsText(file);
+
 })

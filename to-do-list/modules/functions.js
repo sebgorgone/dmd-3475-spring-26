@@ -39,7 +39,7 @@ export function buildBrowserList() {
     } 
   }
   pElement.innerHTML = '';
-  fileName.textContent = active.name;
+  fileName.textContent = active.name + ` [ ${active.list.length} ]`;
 
 
   for (let i = 0; i < browserList.length; i++) {
@@ -619,7 +619,7 @@ function deleteTask(index, activeList, data) {
   }
 
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered();
+  buildBrowserList();
 }
 
 
@@ -645,7 +645,7 @@ export function addTask(task, note, date) {
   active.list = [newItem, ...active.list];
 
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered();
+  buildBrowserList();
 
   taskInput.value = '';
   taskNoteInput.value = '';
@@ -714,7 +714,7 @@ export function sortAlphabetically() {
   }
 
   localStorage.setItem('tasks', JSON.stringify(data));
-  buildTaskListOrdered();
+  buildBrowserList();
 
 }
 
@@ -744,6 +744,10 @@ export function sortByDate() {
 export function wildcardSearch(wc) {
   let data = JSON.parse(localStorage.getItem('tasks'));
 
+  if (wc === '') {
+    buildTaskListOrdered
+  }
+
   function normalize(string) {
     string.trim().toLowerCase().replace(/\s+/g, '').replace(/[^\w]/g, '')
     return string;
@@ -751,66 +755,79 @@ export function wildcardSearch(wc) {
 
   for (let item of data) {
     if (item.active) {
-      let activeList = [];
 
 
-      for (let i of item.list){
-        if (normalize(i.name).includes(normalize(wc))){
-          activeList.push(i);
+      for (let i = 0; i < item.list.length; i++){
+        if (!normalize(item.list[i].name).includes(normalize(wc))){
+
+          const li = document.querySelector(`#list-element-${i}`);
+          li.classList.add('hidden')
+
+
+        } else {
+          const li = document.querySelector(`#list-element-${i}`);
+          li.classList.remove('hidden')
         }
       }
 
-      if (activeList.length === 0){
-        buildTaskListOrdered();
-        return
-      }
-      buildWildcardSearch(activeList);
       return
 
     }
   }
 }
 
+export function downloadList() {
+  const data = JSON.parse(localStorage.getItem('tasks'));
 
+  for (let item of data) {
+    if (item.active) {
+      item.active = false;
+      const jsonString = JSON.stringify(item, null, 2);
 
-function buildWildcardSearch(activeList) {
-  const pElement = listSection;
-  pElement.innerHTML = '';
+      const blob = new Blob([jsonString], { type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${item.name}-${new Date().toISOString().split('T')[0]}`
 
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
 
-  for (let i = 0; i < activeList.length; i++) {
+      URL.revokeObjectURL(url);
+      return
+    }
+  }
+}
 
-    const li = document.createElement('li');
-    li.className = 'list-element';
-    li.id = `list-element-${i}`;
+export function uploadList(obj) {
+  const data = JSON.parse(localStorage.getItem('tasks'));
 
-    const leftDiv = document.createElement('div');
-    leftDiv.className = 'left-div';
+  console.log(typeof obj.name)
 
+  let failed = false;
 
-    const title = document.createElement('h3');
-    title.textContent = activeList[i].name;
+  for (let item of data) {
 
-
-    leftDiv.appendChild(title);
-
-    if (activeList[i].note.trim() !== ''){
-      const note = document.createElement('p');
-      note.textContent = activeList[i].note;
-      leftDiv.appendChild(note);
-    } 
-
-    if (activeList[i].date.trim() !== '') {
-      const date = document.createElement('p');
-      date.className = 'date';
-      date.textContent = activeList[i].date
-      leftDiv.appendChild(date);
+    if (item.name.trim() === obj.name.trim() || obj.name.trim === '' || typeof obj.name !== 'string') {
+      console.log('failed')
+      failed = true;
     }
 
-   
-    li.appendChild(leftDiv);
-
-    pElement.appendChild(li)
+    if (item.active) {
+      item.active = false;
+    }
 
   }
+
+  if (failed) {
+    data[0].active = true
+    return
+  } 
+  obj.active = true;
+
+  data.push(obj);
+
+  localStorage.setItem('tasks', JSON.stringify(data));
+  buildBrowserList();
 }

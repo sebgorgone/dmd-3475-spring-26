@@ -10,34 +10,35 @@
 
 [GOALS]
 
-  - to do list
-  - mark-items-complete
-  - local storage integrated 
+  - to do list [Done]
+  - mark-items-complete [Done] (kinda 'it may be worth adding a way to see what you have done so far')
+  - local storage integrated [Done]
   - download and upload functionality via JSON documents
-  - optional due date for items
-  - name field and notes field
-  - input trimming and returning on empty input attempts
-  - removing items with splice
-  - total item cards
-  - number each item
-  - render by descending order
+  - optional due date for items [Done]
+  - name field and notes field [Done]
+  - input trimming and returning on empty input attempts [Done]
+  - removing items with splice [Done]
+  - total item cards [Done]
+  - number each item *couldnt be bothered*
+  - render by descending order [Done]
 
-  - shift item up
-  - shift item down
+  - shift item up [Done]
+  - shift item down [Done]
 
-  - multiple list support
-  - search functionality
+  - multiple list support [Done]
+  - search functionality [Done]
     *this is going to kill me I think - ive built many search features however in vanilla im having trouble coming up with a way for me do it in a reasonable amount of code and time*
+    ps: **I half assed it**
   - crud features for:
-    > list names
-    > task names
-    > task notes
-    > dates
+    > list names [Done]
+    > task names [Done]
+    > task notes [Done]
+    > dates [Done]
 
-  - file browser
+  - file browser [Done]
 
-  -  **mobile responsive layout**
-  -  **prevent xss as best as i can**
+  -  **mobile responsive layout** [Done]
+  -  **prevent xss as best as i can** [Who really knows]
 
 
 
