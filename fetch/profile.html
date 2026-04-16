@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog breed</title>
+  </head>
+  <body>
+
+
+    <h1>Loading ...</h1>
+
+    <script>
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const body = document.querySelector('body');
+
+    let dogData = null;
+
+    const dogFetch = () => fetch(`https://dogapi.dog/api/v2/breeds/${id}`).then(response => response.json()).then(data => {
+      dogData = data.data;
+      console.log(dogData);
+      render();
+    })
+
+    dogFetch();
+
+
+
+    function render () {
+      body.innerHTML = '';
+
+      const a = document.createElement('a');
+      a.innerText = '<- back';
+      a.href='./index.html';
+      body.appendChild(a);
+
+
+      const h1 = document.createElement('h1');
+      h1.innerText = dogData.attributes.name;
+
+      const ul = document.createElement('ul');
+
+      const avgWeightF = document.createElement('li');
+      avgWeightF.innerText = `Average female weight (lbs) [ ${Math.floor( (dogData.attributes.female_weight.min + dogData.attributes.female_weight.max) / 2 )} ]`
+
+      const avgWeightM = document.createElement('li');
+      avgWeightM.innerText = `Average male weight (lbs) [ ${Math.floor( (dogData.attributes.male_weight.min + dogData.attributes.male_weight.max) / 2 )} ]`
+
+      const avgLife = document.createElement('li');
+      avgLife.innerText = `Average lifespan [ ${Math.floor( (dogData.attributes.life.min + dogData.attributes.life.max) / 2 )} ]`
+
+
+      ul.appendChild(avgWeightF);
+      ul.appendChild(avgWeightM);
+      ul.appendChild(avgLife);
+
+      const p = document.createElement('p');
+      p.innerText = dogData.attributes.description;
+
+      body.appendChild(h1);
+      body.appendChild(ul);
+      body.appendChild(p);
+
+    }
+
+    </script>
+
+  </body>
+</html>
