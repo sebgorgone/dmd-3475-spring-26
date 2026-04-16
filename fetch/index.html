@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Fetch</title>
+</head>
+<body>
+   
+
+    <h1>learning fetch</h1>
+    <button
+      id='prev'
+    >prev</button>
+
+    <button
+      id='nect'
+    >next</button>
+    <h2>page 0</h2>
+
+    <ul
+      id='browser-list'
+    >
+      
+    </ul>
+
+    <script>
+
+    let dogData;
+    
+    localStorage.removeItem('dog');
+
+    const browserList = document.querySelector('#browser-list');
+    const prevButton = document.querySelector('#prev');
+    const nextButton = document.querySelector('#next');
+
+    const pageLimit = 20;
+
+    const dogFetch = () => fetch('https://dogapi.dog/api/v2/breeds').then(response => response.json()).then(data => {
+      dogData = data.data;
+      console.log(dogData);
+      renderIndex(0)
+  
+    })
+
+    dogFetch();
+
+    function renderIndex(pageNum) {
+      const length = dogData.length;
+
+      function getEndIndex () {
+        if ( (pageNum * pageLimit + pageLimit) > length - 1 ){
+          return length;
+        }else {
+          return (pageNum * pageLimit + pageLimit)
+        }
+      }
+
+      for (let i = pageNum * pageLimit; i < getEndIndex(); i++) {
+        const li = document.createElement('li')
+        const name = document.createElement('h3');
+        name.innerText = dogData[i].attributes.name
+
+        li.appendChild(name)
+
+        li.style = 'background-color: grey; padding: 4px; margin: 12px; border-radius: 4px;'
+
+        browserList.appendChild(li)
+      }
+
+
+
+    }
+
+    </script>
+
+</body>
+</html>
